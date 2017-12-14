@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>router</title>
+</head>
+<body>
+	<div ng-app="myapp">
+	
+	<nav>
+		<a ui-sref="home">home</a>
+		<a ui-sref="about">about</a>
+		<a ui-sref="contact">contact</a>	
+
+		</nav>
+		<ui-view>
+		</ui-view>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+	<script type="text/javascript">
+		 angular.module('myapp',['ui.router']);
+	 angular.module('myapp').config(['$stateProvider', '$urlRouterProvider', function($stateProvider,$urlRouterProvider){
+$stateProvider
+	.state('home',{
+		url:'/home',
+		template:'this is home page'
+
+	})
+	.state('about',{
+		url:'/about',
+		template:'this is about page'
+	})
+	.state('contact',{
+		url:'/contact',
+		template:'This is contact page'
+	})
+	$urlRouterProvider.otherwise('/home');
+
+}])
+</script>
+</body>
+</html>

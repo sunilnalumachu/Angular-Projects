@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TODOLOST</title>
+	<div ng-app="myapp">
+		<div ng-controller="firstcnt">
+			<div><h1 align="center">ToDo-List</h1></div>
+			<div>
+			Enter a task Name:<input type="text" ng-model="taskname">
+			Enter a priority:<input type="number" ng-model="taskpri">
+			<button ng-click="addtask()">ADD TASK</button>
+		</div>
+<table border="1px">
+	<thead>
+		<tr>
+			<th>Task Name</th>
+			<th>Priority</th>
+			<th>ID</th>
+		</tr>
+	</thead>>
+	<tbody>
+		<tr ng-show="!!item.id" ng-repeat="item in datafield track by $index">
+			<td ng-hide="item.edit">{{item.name}}</td>
+			<td ng-hide="item.edit">{{item.age}}</td>
+			<td ng-hide="item.edit">{{item.id}}</td>
+			<td ng-hide="item.edit"><button ng-click="removetask(item.id)">Remove Task</button></td>
+			<td ng-hide="item.edit"><button ng-click="edittask(item)">Edit Task</button></td>
+		    <td ng-show="item.edit"><input ng-model="item.changetask" type="text"></td>
+			<td ng-show="item.edit"><input ng-model="item.changepri" ></td>
+			<td ng-show="item.edit">{{item.id}}</td>
+			<td ng-show="item.edit"><button ng-click="dontUpdate(item)">Dont Update </button></td>
+			<td ng-show="item.edit"><button ng-click="updatetask(item)">update task</button></td>
+		</tr>
+	</tbody>
+</table>
+			
+			</div>
+</head>
+<body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+	<script type="text/javascript">
+angular.module('myapp',[]);
+	 angular.module('myapp').controller('firstcnt',['$scope','$http',function($scope,$http){
+	 	$scope.datafield=[];
+function refresh(){
+	 	$http({
+	 		url:'http://rest.learncode.academy/api/exam/tasks/',
+	 		method:'GET'
+	 	}).success(function(data){
+	 		$scope.datafield=data;
+	 	}).error(function(err){
+
+	 	})
+	 }
+	    refresh();
+
+	    $scope.addtask=function(){
+	 	var name=$scope.taskname;
+	 	var pri=$scope.taskpri
+	 	$scope.taskname='';
+	 	$scope.taskpri='';
+	 	var object={
+	 		name:name,
+	 		age:pri
+	 	}
+        $http({
+	 		url:'http://rest.learncode.academy/api/exam/tasks/',
+	 		method:'POST',
+	 		data:object
+	 	}).success(function(data){
+	 		refresh();
+	 	}).error(function(err){
+
+	 	})}
+
+	 	$scope.removetask=function(id){
+	 		$http({
+	 		url:'http://rest.learncode.academy/api/exam/tasks/'+id,
+	 		method:'DELETE'
+	 	}).success(function(data){
+	 		refresh();
+	 	}).error(function(err){
+
+	 	})
+	 	}
+
+		$scope.edittask = function(item){
+					item.edit = true;
+					item.changetask = item.taskname;
+					item.changepri = item.taskpri;
+				}
+				$scope.dontUpdate = function(item){
+					item.edit = false;
+				}
+				$scope.updatetask = function(item) {
+					var changetask = item.changetask;
+					var changepri = item.changepri;
+					var object = {
+						name : changetask,
+						age : changepri
+					}
+					$http({
+						url : 'http://rest.learncode.academy/api/exam/tasks/'+item.id, 
+						method : 'PUT', 
+						data : object
+					}).success(function(data){
+						refresh();
+					})
+				}
+	 	
+}])
+	 
+	</script>
+
+</body>
+</html>

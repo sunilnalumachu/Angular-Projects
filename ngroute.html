@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>router</title>
+</head>
+<body>
+	<div ng-app="myapp">
+	
+	<nav>
+		<a ng-href="#/home">home</a>
+		<a ng-href="#/about">about</a>
+		<a ng-href="#/contact">contact</a>	
+
+		</nav>
+		<ng-view>
+		</ng-view>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-route.min.js"></script>
+	<script type="text/javascript">
+		 angular.module('myapp',['ngRoute']);
+	 angular.module('myapp').config(['$routeProvider',function($routeProvider){
+$routeProvider
+	.when('/home',{
+		
+		template:'this is home page'
+
+	})
+	.when('/about',{
+		template:'this is about page'
+	})
+	.when('/contact',{
+		template:'This is contact page'
+	})
+	.otherwise({
+		redirectTo:'/home'})
+
+}])
+</script>
+</body>
+</html>
